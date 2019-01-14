@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<atlassian-plugin key="${project.groupId}.${project.artifactId}"
+                  name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+        <param name="plugin-icon">images/mscgen-logo2.png</param>
+        <param name="plugin-logo">images/mscgen-logo2.png</param>
+        <param name="atlassian-licensing-enabled">true</param>
+    </plugin-info>
+    <!-- add our i18n resource -->
+    <resource type="i18n" name="i18n" location="macro" />
+    <resource type="download" name="images/" location="/images" />
+
+    <!-- Added from code editor -->
+    <web-resource key="confluence-mscgen-editor-resources"
+                      name="confluence-mscgen-editor Web Resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        <resource type="download" name="confluence-mscgen.css"
+                          location="/css/confluence-mscgen.css" />
+        <resource type="download" name="confluence-mscgen.js"
+                          location="/js/confluence-mscgen.js" />
+        <resource type="download" name="ace.js" location="js/a9Ejs/src/ace.js" />
+        <resource type="download" name="theme-chrome.js" location="js/a9Ejs/src/theme-chrome.js" />
+        <resource type="download" name="mode-mscgen.js" location="js/a9Ejs/src/mode-mscgen.js" />
+        <resource type="download" name="confluence-mscgen-images/" location="images" />
+        <context>confluence-mscgen-editor</context>
+        <context>atl.general</context>
+    </web-resource>
+    <!-- preview servlet. -->
+    <servlet name="Mscgen Preview Servlet" key="mscgen-editor-preview"
+                 class="com.addteq.confluence.plugin.mscgen.servlet.MscgenPreviewHandler">
+        <description key="addteq.servlet.editor.mscgen.description">MSCGEN PREVIEW</description>
+        <url-pattern>/mscgen_editor_preview</url-pattern>
+    </servlet>
+
+
+    <!-- add our web resources -->
+    <web-resource key="macro-resources1.1" name="macro Web Resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        <dependency>confluence.web.resources:ajs</dependency>
+        <resource type="download" name="images/" location="/images" />
+        <context>macro</context>
+    </web-resource>
+	
+    <web-resource key="icon-editor" name="Icon Web Resources">
+        <resource type="download" name="editor.css" location="/css/editor.css" />
+        <dependency>com.atlassian.confluence.tinymceplugin:editor-resources
+        </dependency>
+        <context>editor</context>
+    </web-resource>
+    <ao key="ao-module">
+        <description>The module configuring the Active Objects service used by
+            this plugin
+        </description>
+        <entity>com.addteq.confluence.plugin.mscgen.bean.MscgenImageDB</entity>
+    </ao>
+    <component-import key="ao" name="Active Objects service"
+                          interface="com.atlassian.activeobjects.external.ActiveObjects">
+        <description>Component to access Active Objects functionality from the
+            plugin
+        </description>
+    </component-import>
+    <!-- import from the product container -->
+    <component-import key="applicationProperties"
+                          interface="com.atlassian.sal.api.ApplicationProperties" />
+    <web-section name="addteq-mscgen" i18n-name-key="addteq-mscgen.name" key="addteq-mscgen" location="system.admin" weight="10">
+        <description key="addteq-mscgen.description">The Archive Plugin</description>
+        <label key="addteq-mscgen.label"/>
+    </web-section>
+    <web-item name="Configuration" section="system.admin/addteq-mscgen" weight="500" key="addteq-mscgen-configuration">
+        <description>Configuration</description>
+        <label key="addteq-mscgen-configuration.label"/>
+        <link linkId="addteq-mscgen-configuration.link">/secure/plugins/mscgen/configureMscgenPath.action</link>
+    </web-item>
+    <xwork name="mscgen-xwork" key="mscgen-xwork">
+        <package name="addteq-confluence-plugin-mscgen" extends="default"
+                         namespace="/secure/plugins/mscgen">
+            <default-interceptor-ref name="defaultStack" />
+            <action name="configureMscgenPath"
+                                class="com.addteq.confluence.plugin.mscgen.action.ConfigureMscgenCompilerPath">
+                <result name="success" type="velocity">/template/mscgenSettingsView.vm
+                </result>
+                <result name="error" type="velocity">/template/mscgenSettingsView.vm
+                </result>
+            </action>
+            <action name="checkLicense"
+                                class="com.addteq.confluence.plugin.mscgen.action.CheckLicense">
+                <result name="LICENSED" type="velocity">/template/LicenseCheck.vm</result>
+                <result name="UNLICENSED" type="velocity">/template/LicenseCheck.vm</result>
+            </action>
+        </package>
+    </xwork>
+    <macro name="mscgen" class="com.addteq.confluence.plugin.mscgen.macro.MscgenMacro" key="mscgenmacro"></macro>
+    <xhtml-macro name="mscgen"
+                     class="com.addteq.confluence.plugin.mscgen.macro.MscgenMacro" key="mscgenmacro-xhtml"
+                     icon="/download/resources/${project.groupId}.${project.artifactId}/images/mscgen-logo2.png">
+        <description
+            key="Provides conversion for Mscgen code to respective Images" />
+        <category name="reporting" />
+        <parameters></parameters>
+    </xhtml-macro>
+    <web-item key="addteqmscgen" name="Mscgen"
+                  section="system.editor.featured.macros.default" weight="11">
+        <label key="Mscgen" />
+        <link linkId="mscgen" />
+    </web-item>
+    <component-import key="pluginAccessor"
+                          interface="com.atlassian.plugin.PluginAccessor" />
+    <component-import key="pluginController"
+                          interface="com.atlassian.plugin.PluginController" />
+    <component-import key="txTemplate"
+                          interface="com.atlassian.sal.api.transaction.TransactionTemplate" />
+    <component-import key="templateRenderer"
+                          interface="com.atlassian.templaterenderer.TemplateRenderer" />
+    <component-import key="pluginSettingsFactory"
+                          interface="com.atlassian.sal.api.pluginsettings.PluginSettingsFactory" />
+    <component-import key="loginUriProvider"
+                          interface="com.atlassian.sal.api.auth.LoginUriProvider" />
+    <component-import key="userManager"
+                          interface="com.atlassian.sal.api.user.UserManager" />
+    <component-import key="i18nResolver"
+                          interface="com.atlassian.sal.api.message.I18nResolver" />
+    <component-import key="pluginLicenseManager" 
+                          interface="com.atlassian.upm.api.license.PluginLicenseManager" />
+</atlassian-plugin>

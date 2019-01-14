@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <title>MscGen Configuration</title>
+        <meta name="decorator" content="atl.admin" />
+    </head>
+    <body>
+        <div id="mscgen-data-block" class="aui-group">
+            <form method="POST" id="mscgenform" action="$req.getContextPath()/secure/plugins/mscgen/configureMscgenPath.action" class="aui">
+                <fieldset style="margin-bottom:2%">
+                    #if ($error != "" && $error!=$i18n.getText("com.addteq.confluence.plugin.mscgen.compiler.validpath"))
+                        <div class="aui-message error">
+                            <p class="title">
+                                <span class="aui-icon icon-error"></span>
+                                <strong>$error</strong>
+                            </p>
+                        </div>
+                    #elseif($error == $i18n.getText("com.addteq.confluence.plugin.mscgen.compiler.validpath"))
+                        <div class="aui-message success">
+                            <p class="title">
+                                <span class="aui-icon icon-success"></span>
+                                <strong>$error</strong>
+                            </p>
+                        </div>
+                    #end
+                </fieldset>
+                <fieldset>
+                    <div class="field-group">
+                        <label for="compilerPath" style="width:200px; margin-right:20px">Mscgen executable path
+                            <span class="aui-icon icon-required"> required</span>
+                        </label>
+			#if ($compilerPath=="")         
+                            <input class="text" type="text" id="mscgen-path" placeholder="Absolute path of Mscgen Compiler" size="70" name="compilerPath" title="Path for mscgen compiler">
+                        #else
+                            <input class="text" type="text" id="mscgen-path" value="$compilerPath" name="compilerPath" title="Path for mscgen compiler">
+                        #end
+                        <div class="description" style="margin-left:80px">Absolute path of Mscgen Compiler</div>
+                    </div>
+                </fieldset>
+                <fieldset style="display:none">
+                    <div class="field-group">
+                        <label id="exePathLabel" for="saveOrUpdateFlag" style="width:200px; margin-right:20px">Mscgen executable path 
+                            <span class="aui-icon icon-required"> required</span>
+                        </label>
+                        <input class="text" hidden=true type="text" id="saveOrUpdate" name="saveOrUpdateFlag" title="Absolute path of Mscgen Compiler" value="true" />
+                        <div class="description" style="margin-left:80px">Absolute path of Mscgen Compiler</div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="buttons-container">
+                        <div class="buttons">
+                            <button class="aui-button submit" type="submit">Save</button>
+                            <a class="cancel" onclick="resetValue()">Cancel</a>
+                        </div>
+                    </div>
+                </fieldset> 
+            </form>
+        </div>
+        <script type="text/javascript">
+            function resetValue()
+            {
+                var $compilerPathTextBox = document.getElementById("mscgen-path");
+                var path = $compilerPathTextBox.getAttribute("value");
+                $compilerPathTextBox.value = path;
+                return false;
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,6 @@
+#requireResource("confluence.web.resources:ajs")
+#requireResource("com.addteq.confluence.plugin.mscgen:macro-resources1.1")
+
+<div class="mscgen">
+  $body
+</div>

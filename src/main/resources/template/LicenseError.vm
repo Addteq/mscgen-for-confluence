@@ -1,0 +1,15 @@
+<script>
+AJS.toInit(function() { 	
+	AJS.$('#a').click(function(){
+ 		 window.location.href = AJS.contextPath()+'/plugins/servlet/upm';
+	});
+});
+
+</script>
+<div class="aui-message error">
+    <p class="title">
+        <span class="aui-icon icon-error"></span>
+    Addteq-Mscgen License is not valid. Please contact with your Confluence admin.</p>
+    <p>If you have admin access, you can update the license <a id="a" href="$action.getBootstrapManager().getWebAppContextPath()/plugins/servlet/upm">here</a>.<p>
+    
+</div>  
