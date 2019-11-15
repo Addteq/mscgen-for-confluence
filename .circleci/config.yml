@@ -4,6 +4,7 @@ jobs:
     docker:
       - image: linkyard/atlassian-sdk:8.0.16
     steps:
+      - checkout
       - run:
           name: Atlassian Package
           command: |
