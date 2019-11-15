@@ -1,0 +1,10 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: linkyard/atlassian-sdk:8.0.16
+    steps:
+      - run:
+          name: Atlassian Package
+          command: |
+            atlas-package
