@@ -11,5 +11,5 @@ jobs:
             atlas-package
 
       - store_artifacts:
-           path: /root/project/target
+           path: /root/project/target/*.obr
            destination: mscgen-confluence-plugin-artifact
