@@ -10,6 +10,6 @@ jobs:
           command: |
             atlas-package
 
-       - store_artifacts:
-          path: /root/project/target
-          destination: mscgen-confluence-plugin-artifact
+      - store_artifacts:
+           path: /root/project/target
+           destination: mscgen-confluence-plugin-artifact
